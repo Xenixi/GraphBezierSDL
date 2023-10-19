@@ -72,12 +72,17 @@ int main(int argc, char **argv)
 
     std::cout << "\nData Set.\n Generating curve with " << numPts << " points.\n";
 
-    interpolate2DCurve(&getGenPts()[0], &getGenPts()[1], &getGenPts()[2], 0.5, numPts);
+
+    constexpr double L = 0.5; 
+
+    interpolate2DCurve(&getGenPts()[0], &getGenPts()[1], &getGenPts()[2], L, numPts);
 
     SDL_Window *wnd;
     SDL_Renderer *rnd;
 
     SDL_CreateWindowAndRenderer(800, 800, SDL_WindowFlags::SDL_WINDOW_SHOWN, &wnd, &rnd);
+
+    
 
     bool wndAlive = true;
 
@@ -99,11 +104,21 @@ int main(int argc, char **argv)
 
     SDL_SetRenderDrawColor(rnd, 255, 0, 0, 0);
 
+    SDL_FRect rect;
+    rect.h = 0.8;
+    rect.h = 0.8;
+
     for (int i = 0; i < numPts; i++)
     {
         Point2D *pt = &getCalculated2DCurve()[i];
-        SDL_RenderDrawPointF(rnd, pt->x + wndOrigX, -(pt->y) + wndOrigY);
+        // SDL_RenderDrawPointF(rnd, pt->x + wndOrigX, -(pt->y) + wndOrigY);
+        rect.x = pt->x + wndOrigX;  
+        rect.y = -(pt->y) + wndOrigY;
+        SDL_RenderDrawRectF(rnd, &rect);
+        SDL_RenderFillRectF(rnd, &rect);
     }
+
+    SDL_SetWindowTitle(wnd, (char*)"Graph1");
     //
 
     while (wndAlive)
